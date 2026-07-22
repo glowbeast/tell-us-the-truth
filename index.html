@@ -415,6 +415,7 @@
             <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="Nose Strips" aria-pressed="false">Nose Strips</button>
             <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="Headband" aria-pressed="false">Headband</button>
             <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="Wristbands" aria-pressed="false">Wristbands</button>
+            <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="Mini Gym Bag" aria-pressed="false">Mini Gym Bag</button>
           </div>
         </div>
 
@@ -422,12 +423,6 @@
           <label for="q2">What made you fall in love with it?</label>
           <div class="hint">The texture, the smell, the design, a moment it saved you &mdash; whatever comes to mind first.</div>
           <textarea id="q2" data-key="q2" placeholder="Tell us the real reason"></textarea>
-        </div>
-
-        <div class="q">
-          <label for="q5">What do you think we can improve of the product?</label>
-          <div class="hint">Formula, texture, packaging, size, price &mdash; the thing you&rsquo;d change first.</div>
-          <textarea id="q5" data-key="q5" placeholder="Be specific if you can"></textarea>
         </div>
 
         <div class="nav">
@@ -441,14 +436,15 @@
         <div class="step">Section 2 of 3</div>
 
         <div class="q">
-          <label for="q3">Where do you think we could level up?</label>
-          <div class="hint">Socials, branding, the way we talk, the people we work with &mdash; anything outside the product itself.</div>
-          <textarea id="q3" data-key="q3" placeholder="Say the thing you&rsquo;d say to a friend, not to a brand"></textarea>
+          <label for="q5">What do you think we can improve of the spray?</label>
+          <div class="hint">Formula, texture, scent, the nozzle, size, price &mdash; the thing you&rsquo;d change first.</div>
+          <textarea id="q5" data-key="q5" placeholder="Be specific if you can"></textarea>
         </div>
 
         <div class="q">
-          <label for="q7">What&rsquo;s one thing you wish we offered but don&rsquo;t yet?</label>
-          <textarea id="q7" data-key="q7" placeholder="A shade, a size, a whole product line, a refill&hellip;"></textarea>
+          <label for="q10">What do you think we can improve of the cleanser?</label>
+          <div class="hint">How it lathers, how it feels after, the scent, the packaging &mdash; same deal.</div>
+          <textarea id="q10" data-key="q10" placeholder="Say the thing you&rsquo;d say to a friend, not to a brand"></textarea>
         </div>
 
         <div class="nav">
@@ -547,12 +543,11 @@
   var QUESTIONS = [
     { section: "Faves", items: [
       ["q1", "Favorite glowbeast products"],
-      ["q2", "What made you fall in love with it?"],
-      ["q5", "What could we improve about the product?"]
+      ["q2", "What made you fall in love with it?"]
     ]},
     { section: "Level up", items: [
-      ["q3", "Where could we level up?"],
-      ["q7", "One thing you wish we offered but don't yet"]
+      ["q5", "What could we improve about the spray?"],
+      ["q10", "What could we improve about the cleanser?"]
     ]},
     { section: "Last but not least", items: [
       ["q4", "First word that comes to mind for “glowbeast”"],
