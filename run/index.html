@@ -426,14 +426,26 @@
         <div class="step">Section 1 of 3</div>
 
         <div class="q">
-          <div class="qlabel" id="q1-label">Which glowbeast products did you try today?</div>
-          <div class="hint">Pick as many as you like.</div>
-          <div class="yesno" role="group" aria-labelledby="q1-label">
-            <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="spray 50ml" aria-pressed="false">spray 50ml</button>
-            <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="mini spray 15ml" aria-pressed="false">mini spray 15ml</button>
-            <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="spray keychain" aria-pressed="false">spray keychain</button>
-            <button type="button" class="chip" data-choice="q1" data-multi="true" data-value="nasal strips" aria-pressed="false">nasal strips</button>
+          <div class="qlabel" id="q1a-label">What was your first impression of the spray at the midpoint today?</div>
+          <div class="yesno" role="group" aria-labelledby="q1a-label">
+            <button type="button" class="chip" data-choice="q1a" data-value="Refreshing / cooling" aria-pressed="false">Refreshing / cooling</button>
+            <button type="button" class="chip" data-choice="q1a" data-value="Loved the scent" aria-pressed="false">Loved the scent</button>
+            <button type="button" class="chip" data-choice="q1a" data-value="Not that cooling" aria-pressed="false">Not that cooling</button>
+            <button type="button" class="chip" data-choice="q1a" data-value="Didn&rsquo;t really notice" aria-pressed="false">Didn&rsquo;t really notice</button>
+            <button type="button" class="chip" data-choice="q1a" data-value="Other" aria-pressed="false">Other</button>
           </div>
+          <input type="text" id="q1b" data-key="q1b" class="follow" maxlength="200" placeholder="If other, tell us" autocomplete="off" aria-label="If other, tell us" />
+        </div>
+
+        <div class="q">
+          <div class="qlabel" id="q2a-label">How did your skin feel while running after spraying?</div>
+          <div class="yesno" role="group" aria-labelledby="q2a-label">
+            <button type="button" class="chip" data-choice="q2a" data-value="Fresh &amp; dry" aria-pressed="false">Fresh &amp; dry</button>
+            <button type="button" class="chip" data-choice="q2a" data-value="Sticky" aria-pressed="false">Sticky</button>
+            <button type="button" class="chip" data-choice="q2a" data-value="Cool" aria-pressed="false">Cool</button>
+            <button type="button" class="chip" data-choice="q2a" data-value="Other" aria-pressed="false">Other</button>
+          </div>
+          <input type="text" id="q2b" data-key="q2b" class="follow" maxlength="200" placeholder="If other, tell us" autocomplete="off" aria-label="If other, tell us" />
         </div>
 
         <div class="q">
@@ -475,6 +487,7 @@
             <button type="button" class="chip" data-choice="q4a" data-value="50ml" aria-pressed="false">50ml</button>
             <button type="button" class="chip" data-choice="q4a" data-value="15ml" aria-pressed="false">15ml</button>
             <button type="button" class="chip" data-choice="q4a" data-value="Both, different situations" aria-pressed="false">Both, different situations</button>
+            <button type="button" class="chip" data-choice="q4a" data-value="Need bigger one" aria-pressed="false">Need bigger one</button>
           </div>
           <input type="text" id="q4b" data-key="q4b" class="follow" maxlength="200" placeholder="What made you pick that one" autocomplete="off" aria-label="What made you pick that one" />
         </div>
@@ -575,7 +588,10 @@
 
   var QUESTIONS = [
     { section: "Faves", items: [
-      ["q1", "Products tried today"],
+      ["q1a", "First impression of the spray at the midpoint"],
+      ["q1b", "First impression — other"],
+      ["q2a", "How did your skin feel while running?"],
+      ["q2b", "Skin feel — other"],
       ["q5a", "Will you reach for these on regular runs?"],
       ["q5b", "Why, or why not?"]
     ]},
