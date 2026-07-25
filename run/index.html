@@ -437,9 +437,19 @@
         </div>
 
         <div class="q">
-          <label for="q2">What made you fall in love with it?</label>
-          <div class="hint">The texture, the smell, the design, a moment mid-run it saved you &mdash; whatever comes to mind first.</div>
-          <textarea id="q2" data-key="q2" placeholder="Tell us the real reason"></textarea>
+          <div class="qlabel" id="q5a-label">Will you actually reach for these on your regular runs?</div>
+          <div class="hint">Be honest &mdash; &ldquo;only on race day&rdquo; is a real answer.</div>
+          <div class="yesno" role="group" aria-labelledby="q5a-label">
+            <button type="button" class="chip" data-choice="q5a" data-value="Every run" aria-pressed="false">Every run</button>
+            <button type="button" class="chip" data-choice="q5a" data-value="Once in a while" aria-pressed="false">Once in a while</button>
+            <button type="button" class="chip" data-choice="q5a" data-value="Probably not" aria-pressed="false">Probably not</button>
+          </div>
+        </div>
+
+        <div class="q">
+          <label for="q5b">Why, or why not?</label>
+          <div class="hint">This tells us whether we built a habit or a souvenir.</div>
+          <textarea id="q5b" data-key="q5b" placeholder="The honest version"></textarea>
         </div>
 
         <div class="nav">
@@ -479,22 +489,6 @@
       <!-- 3 -->
       <section class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden>
         <div class="step">Section 3 of 3</div>
-
-        <div class="q">
-          <div class="qlabel" id="q5a-label">Will you actually reach for these on your regular runs?</div>
-          <div class="hint">Be honest &mdash; &ldquo;only on race day&rdquo; is a real answer.</div>
-          <div class="yesno" role="group" aria-labelledby="q5a-label">
-            <button type="button" class="chip" data-choice="q5a" data-value="Every run" aria-pressed="false">Every run</button>
-            <button type="button" class="chip" data-choice="q5a" data-value="Once in a while" aria-pressed="false">Once in a while</button>
-            <button type="button" class="chip" data-choice="q5a" data-value="Probably not" aria-pressed="false">Probably not</button>
-          </div>
-        </div>
-
-        <div class="q">
-          <label for="q5b">Why, or why not?</label>
-          <div class="hint">This tells us whether we built a habit or a souvenir.</div>
-          <textarea id="q5b" data-key="q5b" placeholder="The honest version"></textarea>
-        </div>
 
         <div class="q">
           <label for="q6">What&rsquo;s the first word that comes to mind when you hear &ldquo;glowbeast&rdquo;?</label>
@@ -582,7 +576,8 @@
   var QUESTIONS = [
     { section: "Faves", items: [
       ["q1", "Products tried today"],
-      ["q2", "What made you fall in love with it?"]
+      ["q5a", "Will you reach for these on regular runs?"],
+      ["q5b", "Why, or why not?"]
     ]},
     { section: "Level up", items: [
       ["q3", "What could we improve about the spray?"],
@@ -590,8 +585,6 @@
       ["q4b", "Why that one?"]
     ]},
     { section: "Last but not least", items: [
-      ["q5a", "Will you reach for these on regular runs?"],
-      ["q5b", "Why, or why not?"],
       ["q6", "First word that comes to mind for “glowbeast”"],
       ["q7", "Brands with the same vibe/energy as glowbeast"],
       ["q8a", "Would you recommend us to a friend?"],
