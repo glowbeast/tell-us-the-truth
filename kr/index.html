@@ -44,6 +44,7 @@
     --teal:    #3E9490;
     --teal-dim:#87B9B4;
     --marker:  #F3CE63;
+    --marker-soft: rgba(243, 206, 99, 0.45);
     --field:   #FBFAF7;
 
     --stroke: 2.5px;
@@ -61,6 +62,7 @@
       --teal:    #4FA9A3;
       --teal-dim:#2F5F5D;
       --marker:  #E8C25A;
+      --marker-soft: rgba(232, 194, 90, 0.32);
       --field:   #191614;
     }
   }
@@ -72,6 +74,7 @@
     --teal:    #4FA9A3;
     --teal-dim:#2F5F5D;
     --marker:  #E8C25A;
+    --marker-soft: rgba(232, 194, 90, 0.32);
     --field:   #191614;
   }
   :root[data-theme="light"] {
@@ -82,6 +85,7 @@
     --teal:    #3E9490;
     --teal-dim:#87B9B4;
     --marker:  #F3CE63;
+    --marker-soft: rgba(243, 206, 99, 0.45);
     --field:   #FBFAF7;
   }
 
@@ -123,7 +127,7 @@
   }
 
   h1 mark {
-    background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 94%, transparent 94%);
+    background: linear-gradient(transparent 62%, var(--marker-soft) 62%, var(--marker-soft) 96%, transparent 96%);
     color: inherit;
     padding: 0 2px;
   }
@@ -383,7 +387,7 @@
         <div class="q">
           <label for="q5">스프레이에서 어떤 점이 개선되면 좋을까요?</label>
           <div class="hint">제형, 텍스처, 향, 노즐, 용량 &mdash; 가장 먼저 바꾸고 싶은 것.</div>
-          <textarea id="q5" data-key="q5" placeholder="구체적으로 써주시면 더 좋아요"></textarea>
+          <textarea id="q5" data-key="q5" placeholder="구체적으로 돌직구 부탁드려요!"></textarea>
         </div>
 
         <div class="nav">
@@ -399,7 +403,7 @@
         <div class="q">
           <label for="q10">클렌저에서 어떤 점이 개선되면 좋을까요?</label>
           <div class="hint">거품, 세안 후 느낌, 향, 패키지 &mdash; 똑같이 편하게 적어주세요.</div>
-          <textarea id="q10" data-key="q10" placeholder="브랜드가 아니라 친구한테 말하듯이"></textarea>
+          <textarea id="q10" data-key="q10" placeholder="팩폭 해주시길 바랍니다!"></textarea>
         </div>
 
         <div class="nav">
