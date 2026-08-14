@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>glowbeast — 솔직하게 말해주세요</title>
+<title>glowbeast 솔직하게 말해주세요</title>
 
 <!-- 링크 미리보기 (인스타 DM / 카톡 / 슬랙 등). og:image 는 반드시 절대 URL. -->
 <meta name="description" content="질문은 딱 2개로 5분이면 끝나요. 쓴소리 대환영입니다. 철저한 익명 보장 · 8월 31일까지.">
@@ -414,7 +414,7 @@
 
         <div class="q">
           <label for="q5">스프레이에서 어떤 점이 개선되면 좋을까요?</label>
-          <div class="hint">제형, 텍스처, 향, 노즐, 용량 &mdash; 가장 먼저 바꾸고 싶은 것.</div>
+          <div class="hint">제형, 텍스처, 향, 노즐, 용량. 가장 먼저 바꾸고 싶은 것.</div>
           <textarea id="q5" data-key="q5" placeholder="구체적으로 돌직구 부탁드려요!"></textarea>
         </div>
 
@@ -430,7 +430,7 @@
 
         <div class="q">
           <label for="q10">클렌저에서 어떤 점이 개선되면 좋을까요?</label>
-          <div class="hint">거품, 세안 후 느낌, 향, 패키지 &mdash; 똑같이 편하게 적어주세요.</div>
+          <div class="hint">거품, 세안 후 느낌, 향, 패키지. 똑같이 편하게 적어주세요.</div>
           <textarea id="q10" data-key="q10"></textarea>
         </div>
 
@@ -444,7 +444,7 @@
       <!-- done -->
       <section class="panel done" id="panel-done" hidden>
         <h2 id="done-title">여기까지예요. 정말 고맙습니다.</h2>
-        <p id="done-body">답변 잘 받았어요. 하나도 빠짐없이 다 읽어요 &mdash; 쓴소리는 두 번씩.</p>
+        <p id="done-body">답변 잘 받았어요. 하나도 빠짐없이 다 읽어요. 쓴소리는 두 번씩.</p>
 
         <div id="fallback" hidden>
           <textarea id="summary" readonly aria-label="복사할 수 있는 내 답변"></textarea>
@@ -610,12 +610,12 @@
   function showDone(sent) {
     if (sent) {
       doneTitle.textContent = "여기까지예요. 정말 고맙습니다.";
-      doneBody.textContent = "답변 잘 받았어요. 하나도 빠짐없이 다 읽어요 — 쓴소리는 두 번씩.";
+      doneBody.textContent = "답변 잘 받았어요. 하나도 빠짐없이 다 읽어요. 쓴소리는 두 번씩.";
       fallback.hidden = true;
       foot.textContent = "전송 완료. 이제 창을 닫으셔도 돼요.";
     } else {
-      doneTitle.textContent = "거의 다 됐어요 — 한 단계만 직접!";
-      doneBody.textContent = "지금 서버에 연결이 안 됐어요. 아래 답변을 복사해서 DM으로 그대로 보내주세요 — 내용은 그대로 남아 있어요.";
+      doneTitle.textContent = "거의 다 됐어요. 한 단계만 직접!";
+      doneBody.textContent = "지금 서버에 연결이 안 됐어요. 아래 답변을 복사해서 DM으로 그대로 보내주세요. 내용은 그대로 남아 있어요.";
       summary.value = buildSummary();
       fallback.hidden = false;
       foot.textContent = "복사해서 보내기 전까지 답변은 이 브라우저에만 저장돼요.";
@@ -692,7 +692,7 @@
       try { ok = document.execCommand("copy"); } catch (e) {}
       toast.textContent = ok
         ? "복사했어요. DM에 붙여넣으면 끝!"
-        : "자동 복사가 안 됐어요 — 텍스트가 선택돼 있으니 Cmd/Ctrl+C 를 눌러주세요.";
+        : "자동 복사가 안 됐어요. 텍스트가 선택돼 있으니 Cmd/Ctrl+C 를 눌러주세요.";
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(summary.value).then(function () {
