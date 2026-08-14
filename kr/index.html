@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>glowbeast — 솔직하게 말해주세요</title>
+
+<!-- 링크 미리보기 (인스타 DM / 카톡 / 슬랙 등). og:image 는 반드시 절대 URL. -->
+<meta name="description" content="질문은 딱 두 개, 1분이면 끝나요. 얼마든지 솔직하게 — 듣기 좋은 말은 저희가 쓸 수 없는 답이에요.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="glowbeast">
+<meta property="og:url" content="https://glowbeast.github.io/tell-us-the-truth/kr/">
+<meta property="og:title" content="glowbeast가 여러분 의견을 듣고 싶어요!!">
+<meta property="og:description" content="1분이면 끝나요. 얼마든지 솔직하게 — 듣기 좋은 말은 저희가 쓸 수 없는 답이에요.">
+<meta property="og:image" content="https://glowbeast.github.io/tell-us-the-truth/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TRUTH OR NOTHING">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="glowbeast가 여러분 의견을 듣고 싶어요!!">
+<meta name="twitter:description" content="1분이면 끝나요. 얼마든지 솔직하게 — 듣기 좋은 말은 저희가 쓸 수 없는 답이에요.">
+<meta name="twitter:image" content="https://glowbeast.github.io/tell-us-the-truth/og.png">
+
+<!-- ───────────────────────────────────────────────────────────────
+     응답 수집 엔드포인트.
+     Apps Script를 웹 앱으로 배포한 뒤 받은 /exec URL을 여기 붙여넣으세요.
+     비워두면 폼은 그대로 동작하되 "복사해서 보내기" 모드로 떨어집니다.
+     ─────────────────────────────────────────────────────────────── -->
+<script>
+  window.GLOWBEAST_ENDPOINT = "__ENDPOINT__";
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; padding: 0; }
+  img { max-width: 100%; }
+
+  :root {
+    --paper:   #F2EFE9;
+    --panel:   #DBDDDC;
+    --ink:     #101211;
+    --ink-soft:#4B5150;
+    --teal:    #3E9490;
+    --teal-dim:#87B9B4;
+    --marker:  #F3CE63;
+    --field:   #FBFAF7;
+
+    --stroke: 2.5px;
+    --r-card: 30px 34px 30px 32px;
+
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:   #14100E;
+      --panel:   #23201E;
+      --ink:     #F2EFE9;
+      --ink-soft:#A9A29B;
+      --teal:    #4FA9A3;
+      --teal-dim:#2F5F5D;
+      --marker:  #E8C25A;
+      --field:   #191614;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:   #14100E;
+    --panel:   #23201E;
+    --ink:     #F2EFE9;
+    --ink-soft:#A9A29B;
+    --teal:    #4FA9A3;
+    --teal-dim:#2F5F5D;
+    --marker:  #E8C25A;
+    --field:   #191614;
+  }
+  :root[data-theme="light"] {
+    --paper:   #F2EFE9;
+    --panel:   #DBDDDC;
+    --ink:     #101211;
+    --ink-soft:#4B5150;
+    --teal:    #3E9490;
+    --teal-dim:#87B9B4;
+    --marker:  #F3CE63;
+    --field:   #FBFAF7;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, "Apple SD Gothic Neo", Pretendard,
+                 "Noto Sans KR", "Malgun Gothic", "Segoe UI", system-ui, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  .wrap {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ---------- intro ---------- */
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--teal);
+  }
+
+  h1 {
+    font-size: clamp(32px, 6.6vw, 50px);
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.14;
+    text-wrap: balance;
+    margin-top: 10px;
+  }
+
+  h1 mark {
+    background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 94%, transparent 94%);
+    color: inherit;
+    padding: 0 2px;
+  }
+
+  .lede {
+    margin-top: 14px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 30ch;
+  }
+
+  /* ---------- tabbed card ---------- */
+
+  .board { position: relative; }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    position: relative;
+    z-index: 3;
+    margin-bottom: -2px;
+  }
+
+  .tab {
+    position: relative;
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    background: var(--teal-dim);
+    padding: 13px 6px 15px;
+    border-radius: 46% 46% 4px 4px / 90% 90% 4px 4px;
+    transition: background 140ms ease, transform 140ms ease;
+  }
+  .tab:nth-child(1) { transform: rotate(-0.5deg); }
+  .tab:nth-child(2) { transform: rotate(0.5deg); }
+  .tab[aria-selected="true"] { background: var(--teal); }
+  .tab:hover { background: var(--teal); }
+
+  /* highlighter stroke behind each tab */
+  .tab::before {
+    content: "";
+    position: absolute;
+    inset: -7px -7px -4px;
+    border: 5px solid var(--marker);
+    border-radius: 46% 46% 8px 8px / 78% 78% 8px 8px;
+    filter: url(#wobble-a);
+    z-index: -1;
+  }
+  .tab:nth-child(2)::before { filter: url(#wobble-c); }
+
+  .tab:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 4px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--panel);
+    border-radius: var(--r-card);
+    padding: 44px 34px 34px;
+  }
+
+  /* wobbly hand-drawn outline, borders only so text stays crisp */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: var(--stroke) solid var(--ink);
+    border-radius: var(--r-card);
+    filter: url(#wobble-b);
+    pointer-events: none;
+  }
+
+  .panel[hidden] { display: none; }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .step {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- questions ---------- */
+
+  .q { display: flex; flex-direction: column; gap: 10px; }
+
+  .q > label, .q > .qlabel {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.45;
+    text-wrap: balance;
+  }
+
+  .hint {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: -4px;
+  }
+
+  input[type="text"], textarea {
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--field);
+    border: 2px solid var(--ink);
+    border-radius: 14px 16px 14px 17px;
+    padding: 12px 14px;
+    width: 100%;
+    resize: none;
+    transition: box-shadow 120ms ease;
+  }
+
+  input[type="text"]::placeholder, textarea::placeholder { color: var(--ink-soft); opacity: 0.75; }
+
+  input[type="text"]:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--marker);
+  }
+
+  textarea { min-height: 120px; overflow: hidden; }
+
+  /* ---------- nav ---------- */
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 4px;
+  }
+  .nav .spacer { flex: 1; }
+
+  .btn {
+    appearance: none;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 999px;
+    padding: 12px 26px;
+    border: 2px solid var(--ink);
+    background: var(--field);
+    color: var(--ink);
+    transition: transform 120ms ease, background 120ms ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .btn.primary { background: var(--teal); color: var(--paper); }
+  .btn.primary:hover { background: var(--ink); }
+  .btn.ghost { border-color: transparent; background: transparent; color: var(--ink-soft); padding-left: 4px; padding-right: 4px; }
+  .btn.ghost:hover { color: var(--ink); background: transparent; }
+  .btn[disabled] { opacity: 0.55; cursor: default; transform: none; }
+
+  /* ---------- done ---------- */
+
+  .done { display: flex; flex-direction: column; gap: 18px; }
+
+  .done h2 {
+    font-size: clamp(25px, 4.8vw, 33px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .done p { color: var(--ink-soft); font-size: 16px; max-width: 34ch; }
+
+  #summary {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    min-height: 200px;
+    max-height: 340px;
+    overflow-y: auto;
+    background: var(--field);
+    white-space: pre-wrap;
+  }
+
+  #fallback[hidden] { display: none; }
+  #fallback { display: flex; flex-direction: column; gap: 18px; }
+
+  .toast {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal);
+    min-height: 20px;
+  }
+
+  .foot {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 520px) {
+    .card { padding: 36px 22px 26px; }
+    .tab { font-size: 14px; padding: 12px 4px 14px; }
+    .nav { flex-wrap: wrap; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="wobble-a">
+    <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="7" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <filter id="wobble-b">
+    <feTurbulence type="fractalNoise" baseFrequency="0.019" numOctaves="3" seed="21" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <filter id="wobble-c">
+    <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="3" seed="42" result="n" />
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">glowbeast &times; you</div>
+    <h1><mark>진짜</mark> 어떻게 생각하는지 알려주세요.</h1>
+    <p class="lede">질문은 딱 두 개, 1분이면 끝나요. 얼마든지 솔직하게 &mdash; 듣기 좋은 말은 저희가 쓸 수 없는 답이거든요.</p>
+  </header>
+
+  <div class="board">
+    <div class="tabs" role="tablist" aria-label="설문 섹션">
+      <button class="tab" role="tab" id="tab-0" aria-controls="panel-0" aria-selected="true">스프레이</button>
+      <button class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="false" tabindex="-1">클렌저</button>
+    </div>
+
+    <div class="card">
+
+      <!-- 1 -->
+      <section class="panel" role="tabpanel" id="panel-0" aria-labelledby="tab-0" tabindex="0">
+        <div class="step">2개 중 1번째</div>
+
+        <div class="q">
+          <label for="q5">스프레이에서 어떤 점이 개선되면 좋을까요?</label>
+          <div class="hint">제형, 텍스처, 향, 노즐, 용량, 가격 &mdash; 가장 먼저 바꾸고 싶은 것.</div>
+          <textarea id="q5" data-key="q5" placeholder="구체적으로 써주시면 더 좋아요"></textarea>
+        </div>
+
+        <div class="nav">
+          <div class="spacer"></div>
+          <button class="btn primary" data-go="1">다음</button>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0" hidden>
+        <div class="step">2개 중 2번째</div>
+
+        <div class="q">
+          <label for="q10">클렌저에서 어떤 점이 개선되면 좋을까요?</label>
+          <div class="hint">거품, 세안 후 느낌, 향, 패키지 &mdash; 똑같이 편하게 적어주세요.</div>
+          <textarea id="q10" data-key="q10" placeholder="브랜드가 아니라 친구한테 말하듯이"></textarea>
+        </div>
+
+        <div class="nav">
+          <button class="btn ghost" data-go="0">&larr; 이전</button>
+          <div class="spacer"></div>
+          <button class="btn primary" id="finish">보내기</button>
+        </div>
+      </section>
+
+      <!-- done -->
+      <section class="panel done" id="panel-done" hidden>
+        <h2 id="done-title">여기까지예요. 정말 고맙습니다.</h2>
+        <p id="done-body">답변 잘 받았어요. 하나도 빠짐없이 다 읽어요 &mdash; 쓴소리는 두 번씩.</p>
+
+        <div id="fallback" hidden>
+          <textarea id="summary" readonly aria-label="복사할 수 있는 내 답변"></textarea>
+          <div class="nav">
+            <button class="btn primary" id="copy">답변 복사하기</button>
+            <button class="btn ghost" id="back-edit">답변 고치기</button>
+            <div class="spacer"></div>
+          </div>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <p class="foot" id="foot">보내기 전까지 답변은 이 브라우저에만 저장돼요.</p>
+</div>
+
+<script>
+(function () {
+  var STORE = "glowbeast-creator-survey-kr-v1";
+  var ENDPOINT = (window.GLOWBEAST_ENDPOINT || "").trim();
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var panels = [0, 1].map(function (i) { return document.getElementById("panel-" + i); });
+  var donePanel = document.getElementById("panel-done");
+  var fields = Array.prototype.slice.call(document.querySelectorAll("[data-key]"));
+  var chips = Array.prototype.slice.call(document.querySelectorAll("[data-choice]"));
+
+  var QUESTIONS = [
+    { section: "스프레이", items: [
+      ["q5", "스프레이에서 개선되면 좋을 점"]
+    ]},
+    { section: "클렌저", items: [
+      ["q10", "클렌저에서 개선되면 좋을 점"]
+    ]}
+  ];
+
+  // 배열(다중선택)도 문자열도 안전하게 텍스트로.
+  function textOf(key) {
+    var v = answers[key];
+    if (Array.isArray(v)) return v.join(", ");
+    return v === undefined || v === null ? "" : String(v);
+  }
+
+  var answers = {};
+  try { answers = JSON.parse(localStorage.getItem(STORE) || "{}") || {}; } catch (e) { answers = {}; }
+
+  function save() {
+    try { localStorage.setItem(STORE, JSON.stringify(answers)); } catch (e) {}
+  }
+
+  function grow(el) {
+    if (el.tagName !== "TEXTAREA" || el.id === "summary") return;
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  }
+
+  fields.forEach(function (el) {
+    var key = el.getAttribute("data-key");
+    if (answers[key]) el.value = answers[key];
+    grow(el);
+    el.addEventListener("input", function () {
+      answers[key] = el.value;
+      grow(el);
+      save();
+    });
+  });
+
+  chips.forEach(function (chip) {
+    var key = chip.getAttribute("data-choice");
+    var val = chip.getAttribute("data-value");
+    var multi = chip.getAttribute("data-multi") === "true";
+
+    if (multi) {
+      if (Array.isArray(answers[key]) && answers[key].indexOf(val) !== -1) {
+        chip.setAttribute("aria-pressed", "true");
+      }
+    } else if (answers[key] === val) {
+      chip.setAttribute("aria-pressed", "true");
+    }
+
+    chip.addEventListener("click", function () {
+      if (multi) {
+        // 중복 선택: 토글해서 배열에 쌓는다.
+        var list = Array.isArray(answers[key]) ? answers[key].slice() : [];
+        var at = list.indexOf(val);
+        if (at === -1) {
+          list.push(val);
+          chip.setAttribute("aria-pressed", "true");
+        } else {
+          list.splice(at, 1);
+          chip.setAttribute("aria-pressed", "false");
+        }
+        if (list.length) { answers[key] = list; } else { delete answers[key]; }
+      } else {
+        // 단일 선택: 같은 key의 다른 칩은 해제.
+        var already = answers[key] === val;
+        chips.forEach(function (c) {
+          if (c.getAttribute("data-choice") === key) c.setAttribute("aria-pressed", "false");
+        });
+        if (already) { delete answers[key]; }
+        else { answers[key] = val; chip.setAttribute("aria-pressed", "true"); }
+      }
+      save();
+    });
+  });
+
+  function show(index) {
+    donePanel.hidden = true;
+    panels.forEach(function (p, i) { p.hidden = i !== index; });
+    tabs.forEach(function (t, i) {
+      t.setAttribute("aria-selected", i === index ? "true" : "false");
+      t.tabIndex = i === index ? 0 : -1;
+    });
+    panels[index].querySelectorAll("textarea").forEach(grow);
+    document.querySelector(".board").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { show(i); });
+    tab.addEventListener("keydown", function (e) {
+      var next = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : null;
+      if (next === null) return;
+      e.preventDefault();
+      next = (next + tabs.length) % tabs.length;
+      show(next);
+      tabs[next].focus();
+    });
+  });
+
+  document.querySelectorAll("[data-go]").forEach(function (btn) {
+    btn.addEventListener("click", function () { show(parseInt(btn.getAttribute("data-go"), 10)); });
+  });
+
+  function buildSummary() {
+    var lines = ["glowbeast 크리에이터 설문", ""];
+    QUESTIONS.forEach(function (group) {
+      var rows = group.items.filter(function (it) {
+        return textOf(it[0]).trim() !== "";
+      });
+      if (!rows.length) return;
+      lines.push("[" + group.section + "]");
+      rows.forEach(function (it) {
+        lines.push(it[1]);
+        lines.push("→ " + textOf(it[0]).trim());
+        lines.push("");
+      });
+    });
+    if (lines.length <= 2) lines.push("(아직 작성된 답변이 없어요)");
+    return lines.join("\n").trim();
+  }
+
+  var summary = document.getElementById("summary");
+  var toast = document.getElementById("toast");
+  var fallback = document.getElementById("fallback");
+  var doneTitle = document.getElementById("done-title");
+  var doneBody = document.getElementById("done-body");
+  var foot = document.getElementById("foot");
+  var finishBtn = document.getElementById("finish");
+
+  function showDone(sent) {
+    if (sent) {
+      doneTitle.textContent = "여기까지예요. 정말 고맙습니다.";
+      doneBody.textContent = "답변 잘 받았어요. 하나도 빠짐없이 다 읽어요 — 쓴소리는 두 번씩.";
+      fallback.hidden = true;
+      foot.textContent = "전송 완료. 이제 창을 닫으셔도 돼요.";
+    } else {
+      doneTitle.textContent = "거의 다 됐어요 — 한 단계만 직접!";
+      doneBody.textContent = "지금 서버에 연결이 안 됐어요. 아래 답변을 복사해서 DM으로 그대로 보내주세요 — 내용은 그대로 남아 있어요.";
+      summary.value = buildSummary();
+      fallback.hidden = false;
+      foot.textContent = "복사해서 보내기 전까지 답변은 이 브라우저에만 저장돼요.";
+    }
+    panels.forEach(function (p) { p.hidden = true; });
+    donePanel.hidden = false;
+    tabs.forEach(function (t) { t.setAttribute("aria-selected", "false"); });
+    toast.textContent = "";
+    document.querySelector(".board").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function payload() {
+    var out = { submittedAt: new Date().toISOString(), userAgent: navigator.userAgent };
+    QUESTIONS.forEach(function (group) {
+      group.items.forEach(function (it) {
+        out[it[0]] = textOf(it[0]).trim();
+      });
+    });
+    return out;
+  }
+
+  // Apps Script 웹 앱은 text/plain 본문이면 CORS preflight 없이 받습니다.
+  function send() {
+    var body = JSON.stringify(payload());
+    var opts = {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: body
+    };
+    return fetch(ENDPOINT, opts)
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return true;
+      })
+      .catch(function () {
+        // 리다이렉트/CORS로 응답을 못 읽는 경우가 있어 no-cors로 한 번 더 시도.
+        return fetch(ENDPOINT, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: body
+        }).then(function () { return true; });
+      });
+  }
+
+  finishBtn.addEventListener("click", function () {
+    if (!ENDPOINT) { showDone(false); return; }
+
+    finishBtn.disabled = true;
+    finishBtn.textContent = "보내는 중…";
+
+    send()
+      .then(function () {
+        try { localStorage.removeItem(STORE); } catch (e) {}
+        showDone(true);
+      })
+      .catch(function () {
+        showDone(false);
+      })
+      .then(function () {
+        finishBtn.disabled = false;
+        finishBtn.textContent = "보내기";
+      });
+  });
+
+  document.getElementById("back-edit").addEventListener("click", function () { show(0); });
+
+  document.getElementById("copy").addEventListener("click", function () {
+    function fallbackCopy() {
+      summary.focus();
+      summary.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      toast.textContent = ok
+        ? "복사했어요. DM에 붙여넣으면 끝!"
+        : "자동 복사가 안 됐어요 — 텍스트가 선택돼 있으니 Cmd/Ctrl+C 를 눌러주세요.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(summary.value).then(function () {
+        toast.textContent = "복사했어요. DM에 붙여넣으면 끝!";
+      }, fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
